@@ -42,7 +42,7 @@
 ;;===
 (defun my-kill-buffers (&rest n)
   (mapc
-   '(lambda (x)
+   #'(lambda (x)
       (let ((b (get-buffer x)))
         (when b (kill-buffer b)))) n)
   (delete-other-windows))
@@ -51,7 +51,7 @@
 (defun my-emacs-lisp-hook ()
   (my-local-set-key (kbd "<f7>") 'delete-other-windows)
   (mapc
-   '(lambda (sym) (put sym 'lisp-indent-function 'defun))
+   #'(lambda (sym) (put sym 'lisp-indent-function 'defun))
    '(add-hook my-local-set-key my-global-set-key
       global-set-key local-set-key)))
 
