@@ -547,6 +547,7 @@
  '(electric-pair-mode t)
  '(global-auto-revert-mode t)
  '(hi-lock-auto-select-face t)
+ '(horizontal-scroll-bar-mode nil)
  '(icomplete-mode t)
  '(icomplete-prospects-height 1)
  '(ido-auto-merge-work-directories-length -1)
@@ -573,6 +574,8 @@
  '(python-indent-offset 2)
  '(python-shell-interpreter "python")
  '(scheme-program-name "racket")
+ '(scroll-bar-mode t)
+ '(select-enable-clipboard t)
  '(show-paren-delay 0.0)
  '(show-paren-mode t)
  '(show-paren-style (quote parenthesis))
@@ -586,7 +589,6 @@
  '(tcl-continued-indent-level 2)
  '(tcl-indent-level 2)
  '(tool-bar-mode nil)
- '(x-select-enable-clipboard t)
  '(x-select-enable-clipboard-manager t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
