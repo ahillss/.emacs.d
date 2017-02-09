@@ -478,55 +478,6 @@
 
 (add-hook 'lisp-mode-hook 'my-lisp-hook)
 
-;;===sql
-(defun my-sql-connect ()
-  (interactive)
-  (setq
-   sql-product
-   (intern
-    (read-string
-     (format "product (%s):" sql-product)
-     nil nil (symbol-name sql-product)))
-   sql-server
-   (read-string
-    (format"server (%s):" sql-server)
-    nil nil sql-server)
-   sql-port
-   (string-to-number
-    (read-string
-     (format "port (%i):" sql-port)
-     nil nil (number-to-string sql-port)))
-   sql-user
-   (read-string
-    (format "user (%s):" sql-user)
-    nil nil sql-user)
-   sql-password
-   (read-string
-    (format "pw (%s):" sql-password)
-    nil nil sql-password)
-   sql-database
-   (read-string
-    (format "db (%s):" sql-database)
-    nil nil sql-database))
-  (execute-kbd-macro
-   (vconcat [?\M-x] "sql-product-interactive")))
-
-(defun my-sql-kill ()
-  (interactive)
-  (my-kill-buffers "*SQL*"))
-
-(defun my-sql-hook ()
-  (my-local-set-key (kbd "<f5>")
-    'save-buffer 'sql-send-buffer)
-  (my-local-set-key (kbd "<f6>")
-    'save-buffer 'my-region-expand 'my-region-line 'sql-send-region)
-  (my-local-set-key (kbd "<f7>")
-    'my-sql-kill)
-  (my-local-set-key (kbd "<f9>")
-    'my-sql-connect 'other-window))
-
-(add-hook 'sql-mode-hook 'my-sql-hook)
-
 ;;===extra
 (require 'my-extra nil t)
 (require 'simple-tabbar-mode nil t)
@@ -537,7 +488,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(c-basic-offset 2)
+ '(c-basic-offset 4)
  '(comint-scroll-to-bottom-on-input t)
  '(compilation-read-command nil)
  '(compile-command "make")
@@ -560,7 +511,7 @@
  '(ido-use-filename-at-point (quote guess))
  '(indent-tabs-mode nil)
  '(inferior-lisp-program "sbcl")
- '(js-indent-level 2)
+ '(js-indent-level 4)
  '(linum-delay t)
  '(linum-eager nil)
  '(make-backup-files nil)
@@ -571,7 +522,7 @@
  '(prolog-indent-width 2)
  '(prolog-system (quote swi))
  '(python-indent-guess-indent-offset nil)
- '(python-indent-offset 2)
+ '(python-indent-offset 4)
  '(python-shell-interpreter "python")
  '(scheme-program-name "racket")
  '(scroll-bar-mode t)
@@ -579,12 +530,6 @@
  '(show-paren-delay 0.0)
  '(show-paren-mode t)
  '(show-paren-style (quote parenthesis))
- '(sql-database "test")
- '(sql-password "pass")
- '(sql-port 3306)
- '(sql-product (quote mysql))
- '(sql-server "alarmpi")
- '(sql-user "root")
  '(tcl-application "tclsh")
  '(tcl-continued-indent-level 2)
  '(tcl-indent-level 2)
