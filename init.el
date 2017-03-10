@@ -72,8 +72,8 @@
   'undo-only)
 
 ;;===tabs to spaces on indent
-(my-global-set-key (kbd "<tab>")
-  'untabify 'indent-for-tab-command)
+(defadvice my-tab-indent-hook (around indent-for-tab-command activate)
+  (call-interactively 'untabify) ad-do-it)
 
 ;;===ido
 (defun op-i:dired ()
