@@ -71,6 +71,10 @@
 (global-set-key "\C-z"
   'undo-only)
 
+;;===tabs to spaces on indent
+(my-global-set-key (kbd "<tab>")
+  'untabify 'indent-for-tab-command)
+
 ;;===ido
 (defun op-i:dired ()
   (interactive)
