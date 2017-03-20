@@ -321,8 +321,13 @@
 (defun my-python-start ()
   (interactive)
   (unless (get-buffer "*Python*")
-    (call-interactively 'run-python)
-    (other-window 1)))
+    ;; (call-interactively 'run-python)
+    ;; (other-window 1)
+    (let ((c (current-buffer)))
+      (call-interactively 'run-python)
+      (other-window 1)
+      (switch-to-buffer-other-window c))
+    ))
 
 (defun my-python-kill ()
   (interactive)
@@ -345,6 +350,16 @@
   (my-local-set-key (kbd "<f7>") 'my-python-kill))
 
 (add-hook 'python-mode-hook 'my-python-hook)
+
+(with-eval-after-load 'python
+  (defun python-shell-completion-native-try ()
+    "Return non-nil if can trigger native completion."
+    (let ((python-shell-completion-native-enable t)
+          (python-shell-completion-native-output-timeout
+           python-shell-completion-native-try-output-timeout))
+      (python-shell-completion-native-get-completions
+       (get-buffer-process (current-buffer))
+       nil "_")) ))
 
 ;;===tcl
 (defun my-tcl-file ()
