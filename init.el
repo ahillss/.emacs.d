@@ -253,19 +253,17 @@
 (defun my-latex-file ()
   (interactive)
   (let* ((fn (buffer-file-name (current-buffer)))
-         (out-dir (concat (file-name-directory fn) "bin")))
-    (unless (file-exists-p out-dir)
-      (make-directory out-dir))
-    (let ((cmd (concat "pdflatex -output-directory="
-                       out-dir " -halt-on-error " fn))
-          (default-directory (concat (file-name-directory fn))))
-      (if (= 0 (shell-command cmd "*tex-shell*"))
-          (progn (message "success") (delete-windows-on "*tex-shell*"))
-        (let ((c (current-buffer)))
-          (switch-to-buffer-other-window "*tex-shell*")
-          (end-of-buffer)
-          (switch-to-buffer-other-window c)
-          (message "failed") )))))
+         (out (concat (file-name-directory fn) "bin"))
+         (cmd (concat "pdflatex -halt-on-error -output-directory=" out " " fn))
+         (default-directory (concat (file-name-directory fn))))
+    (unless (file-exists-p out) (make-directory out))
+    (if (= 0 (shell-command cmd "*tex-shell*"))
+        (progn (message "success") (delete-windows-on "*tex-shell*"))
+      (let ((c (current-buffer)))
+        (switch-to-buffer-other-window "*tex-shell*")
+        (end-of-buffer)
+        (switch-to-buffer-other-window c)
+        (message "failed") ))))
 
 (defun my-latex-kill ()
   (interactive)
@@ -484,6 +482,7 @@
 ;;===extra
 (require 'my-extra nil t)
 (require 'simple-tabbar-mode nil t)
+(require 'fill-column-indicator nil t)
 
 ;;===
 (custom-set-variables
