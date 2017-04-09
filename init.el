@@ -37,11 +37,11 @@
     `(lambda () (interactive) (mapc 'call-interactively (quote (,@l))))))
 
 ;;===
-(defun my-kill-buffers (&rest n)
+(defun my-kill-buffers (&rest na)
   (mapc
-   #'(lambda (x)
+   `(lambda (x)
       (let ((b (get-buffer x)))
-        (when b (kill-buffer b)))) n)
+        (when b (kill-buffer b)))) ,n)
   (delete-other-windows))
 
 ;;===elisp
@@ -82,32 +82,15 @@
 
 (global-set-key (kbd "C-x C-d") 'op-i:dired)
 
-;;===mouse2 select copy
-(defadvice mouse-save-then-kill (around mouse2-copy-region activate)
-  (unless mark-active
-    (move-beginning-of-line nil)
-    (skip-chars-forward " \t")
-    (set-mark-command nil)
-    (move-end-of-line nil)
-    (skip-chars-backward " \t") )
-  ;; (my-region-line)
-  (if (region-active-p)
-      (copy-region-as-kill (region-beginning) (region-end)))
-  ad-do-it)
-
 ;;===
 (defun my-region-line ()
   (interactive)
   (unless (region-active-p)
     (move-beginning-of-line nil)
-    (skip-chars-forward " \t")
+    (skip-chars-forward "\s\t")
     (set-mark-command nil)
     (move-end-of-line nil)
-    (skip-chars-backward " \t")
-    ;; (skip-chars-backward " \t")
-    ;; (set-mark-command nil)
-    ;; (setq deactivate-mark nil)
-    ))
+    (skip-chars-backward "\s\t")))
 
 (defun my-region-expand ()
   (interactive)
@@ -128,7 +111,7 @@
     (save-match-data
       (let ((a (line-beginning-position 1)))
         (goto-char a)
-        (let* ((ptn "^\\([ \t]+\\)[^\r\n]*\\([\r\n]+\\1[ \t]+[^\r\n]*\\)*")
+        (let* ((ptn "^\\([\s\t]+\\)[^\r\n]*\\([\r\n]+\\1[\s\t]+[^\r\n]*\\)*")
                (r (re-search-forward ptn (point-max) t))
                (m (and r (match-end 0)))
                (b (or m (line-end-position 1))))
@@ -146,6 +129,12 @@
       (my-region-indents))
     (indent-rigidly (region-beginning) (region-end) amount)
     (setq deactivate-mark nil)))
+
+;;===mouse2 select copy
+(defadvice mouse-save-then-kill (around mouse2-copy-region activate)
+  (let ((p (region-active-p)))
+    (my-region-line)
+    (when p (call-interactively 'kill-region)))) ;; ad-do-it
 
 ;;===cut/copy
 (my-global-set-key "\C-w"
@@ -514,7 +503,6 @@
  '(linum-eager nil)
  '(make-backup-files nil)
  '(menu-bar-mode nil)
- '(mouse-drag-copy-region nil)
  '(mouse-wheel-follow-mouse t)
  '(mouse-wheel-scroll-amount (list 1))
  '(prolog-indent-width 2)
