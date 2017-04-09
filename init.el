@@ -16,9 +16,6 @@
 (setenv "NODE_PATH" "/usr/local/lib/node_modules:$NODE_PATH")
 (setenv "NODE_NO_READLINE" "1")
 
-;;===disable bell
-(setq ring-bell-function nil)
-
 ;;===no query kill processes, buffers
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   (mapc
@@ -482,7 +479,6 @@
 ;;===extra
 (require 'my-extra nil t)
 (require 'simple-tabbar-mode nil t)
-(require 'fill-column-indicator nil t)
 
 ;;===
 (custom-set-variables
@@ -527,6 +523,7 @@
  '(python-indent-offset 4)
  '(python-shell-completion-native-enable nil)
  '(python-shell-interpreter "python")
+ '(ring-bell-function (quote ignore))
  '(scheme-program-name "racket")
  '(scroll-bar-mode t)
  '(select-enable-clipboard t)

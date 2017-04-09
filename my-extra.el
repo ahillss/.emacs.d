@@ -121,8 +121,8 @@
   (my-local-set-key (kbd "<f7>")
     'my-scala-kill) )
 
-(add-hook 'scala-mode-hook 'my-scala-hook)
-(autoload 'scala-mode "scala-mode2" "scala..." t)
+;;(add-hook 'scala-mode-hook 'my-scala-hook)
+;;(autoload 'scala-mode "scala-mode2" "scala..." t)
 (add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode))
 
 ;;===haskell
@@ -276,12 +276,13 @@
 ;;(add-hook 'ragel-mode-hook 'my-ragel-hook)
 ;;(add-to-list 'auto-mode-alist '("\\.rl$" . ragel-mode))
 
-;;===80 column line
-(autoload 'fci-mode "fill-column-indicator" "fci..." t)
+;;
+
 (setq fci-rule-column 80)
 (setq fci-rule-color "grey")
 (setq fci-always-use-textual-rule t)
-(add-to-list 'minor-mode-alist '(fci-mode ""))
+(autoload 'fci-mode "fill-column-indicator" "fci..." t)
+
 
 ;;===
 (define-minor-mode my-extra "desc" nil nil nil )
