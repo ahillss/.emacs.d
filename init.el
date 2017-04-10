@@ -23,7 +23,7 @@
    (process-list))
   ad-do-it)
 
-(setq kill-buffer-query-functions nil)
+;; (setq kill-buffer-query-functions nil)
 
 ;;===my-keys
 (defun my-local-set-key (k &rest l)
@@ -37,18 +37,19 @@
     `(lambda () (interactive) (mapc 'call-interactively (quote (,@l))))))
 
 ;;===
-(defun my-kill-buffers (&rest na)
+(defun my-kill-buffers (&rest n)
   (mapc
-   `(lambda (x)
-      (let ((b (get-buffer x)))
-        (when b (kill-buffer b)))) ,n)
+   (lambda (x)
+     (let ((b (get-buffer x)))
+       (when b (kill-buffer b))))
+   n)
   (delete-other-windows))
 
 ;;===elisp
 (defun my-emacs-lisp-hook ()
   (my-local-set-key (kbd "<f7>") 'delete-other-windows)
   (mapc
-   #'(lambda (sym) (put sym 'lisp-indent-function 'defun))
+   (lambda (sym) (put sym 'lisp-indent-function 'defun))
    '(add-hook my-local-set-key my-global-set-key
       global-set-key local-set-key)))
 
@@ -123,18 +124,20 @@
 ;;===shift indent
 (defun shift-indent (amount)
   (interactive "nShift indent by: ")
-  (save-excursion
-    (if (region-active-p)
-        (my-region-expand)
-      (my-region-indents))
-    (indent-rigidly (region-beginning) (region-end) amount)
-    (setq deactivate-mark nil)))
+  (my-region-expand)
+  (my-region-indents)
+  (indent-rigidly (region-beginning) (region-end) amount))
 
-;;===mouse2 select copy
-(defadvice mouse-save-then-kill (around mouse2-copy-region activate)
+;;===mouse3 copy cut
+(defun my-mouse3-kill ()
+  (interactive)
   (let ((p (region-active-p)))
     (my-region-line)
-    (when p (call-interactively 'kill-region)))) ;; ad-do-it
+    (call-interactively
+     (if p 'kill-region 'copy-region-as-kill))))
+
+(my-global-set-key [mouse-3] 'my-mouse3-kill)
+(my-global-set-key [double-mouse-3] 'my-region-line 'kill-region)
 
 ;;===cut/copy
 (my-global-set-key "\C-w"
