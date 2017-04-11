@@ -138,6 +138,15 @@
 (my-global-set-key [mouse-3] 'my-mouse3-kill)
 (my-global-set-key [double-mouse-3] 'my-region-line 'kill-region)
 
+;;===mouse zoom
+(defadvice text-scale-increase (around all-buffers (arg) activate)
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      ad-do-it)))
+
+(global-set-key [C-mouse-4] 'text-scale-increase)
+(global-set-key [C-mouse-5] 'text-scale-decrease)
+
 ;;===cut/copy
 (my-global-set-key "\C-w"
   'my-region-line 'kill-region)
@@ -184,24 +193,21 @@
 (add-hook 'kill-emacs-hook 'my-comint-write-histories)
 
 ;;===shell
-(defun my-shell-sentinel-callback (c)
-  `(lambda (process event)
-     (let ((cc (current-buffer)))
-       (when (eq cc (get-buffer ,bufnm))
-         (switch-to-buffer-other-window ,c)))
-     (message (substring event 0 (- (length event) 1)))))
+(defun my-shell-sentinel-callback (process event)
+  (when (eq (current-buffer) (process-buffer process))
+    (call-interactively 'other-window))
+  (message (substring event 0 (- (length event) 1))))
 
 (defun my-shell-run (cmd bufnm)
   (interactive)
   (let* ((c (current-buffer))
          (fn (buffer-file-name c))
-         (default-directory (file-name-directory fn))
-         (s ))
+         (default-directory (file-name-directory fn)))
     (unless (get-buffer-process bufnm)
       (async-shell-command cmd bufnm)
       (let ((p (get-buffer-process bufnm)))
         (set-process-query-on-exit-flag p nil)
-        (set-process-sentinel p (my-shell-sentinel-callback c))
+        (set-process-sentinel p 'my-shell-sentinel-callback)
         (switch-to-buffer-other-window bufnm)))))
 
 ;;===scheme
