@@ -133,8 +133,7 @@
   (interactive)
   (let ((p (region-active-p)))
     (my-region-line)
-    (call-interactively
-     (if p 'kill-region 'copy-region-as-kill))))
+    (call-interactively (if p 'kill-region 'copy-region-as-kill))))
 
 (my-global-set-key [mouse-3] 'my-mouse3-kill)
 (my-global-set-key [double-mouse-3] 'my-region-line 'kill-region)
@@ -185,21 +184,25 @@
 (add-hook 'kill-emacs-hook 'my-comint-write-histories)
 
 ;;===shell
+(defun my-shell-sentinel-callback (c)
+  `(lambda (process event)
+     (let ((cc (current-buffer)))
+       (when (eq cc (get-buffer ,bufnm))
+         (switch-to-buffer-other-window ,c)))
+     (message (substring event 0 (- (length event) 1)))))
+
 (defun my-shell-run (cmd bufnm)
   (interactive)
   (let* ((c (current-buffer))
          (fn (buffer-file-name c))
-         (default-directory (file-name-directory fn)))
+         (default-directory (file-name-directory fn))
+         (s ))
     (unless (get-buffer-process bufnm)
       (async-shell-command cmd bufnm)
-      (set-process-sentinel
-       (get-buffer-process bufnm)
-       `(lambda (process event)
-          (let ((cc (current-buffer)))
-            (when (eq cc (get-buffer ,bufnm))
-              (switch-to-buffer-other-window ,c)))
-          (message (substring event 0 (- (length event) 1))) ))
-      (switch-to-buffer-other-window bufnm))))
+      (let ((p (get-buffer-process bufnm)))
+        (set-process-query-on-exit-flag p nil)
+        (set-process-sentinel p (my-shell-sentinel-callback c))
+        (switch-to-buffer-other-window bufnm)))))
 
 ;;===scheme
 (defun my-scheme-start ()
