@@ -23,7 +23,8 @@
    (process-list))
   ad-do-it)
 
-;; (setq kill-buffer-query-functions nil)
+;;===
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;===my-keys
 (defun my-local-set-key (k &rest l)
@@ -193,7 +194,7 @@
 (add-hook 'kill-emacs-hook 'my-comint-write-histories)
 
 ;;===shell
-(defun my-shell-sentinel-callback (process event)
+(defun my-shell-sentinel (process event)
   (when (eq (current-buffer) (process-buffer process))
     (call-interactively 'other-window))
   (message (substring event 0 (- (length event) 1))))
@@ -207,7 +208,7 @@
       (async-shell-command cmd bufnm)
       (let ((p (get-buffer-process bufnm)))
         (set-process-query-on-exit-flag p nil)
-        (set-process-sentinel p 'my-shell-sentinel-callback)
+        (set-process-sentinel p 'my-shell-sentinel)
         (switch-to-buffer-other-window bufnm)))))
 
 ;;===scheme
@@ -489,6 +490,7 @@
  ;; If there is more than one, they won't work right.
  '(c-basic-offset 4)
  '(comint-scroll-to-bottom-on-input t)
+ '(compilation-always-kill t)
  '(compilation-read-command nil)
  '(compile-command "make")
  '(cursor-type (cons (quote bar) 1))
@@ -511,6 +513,7 @@
  '(indent-tabs-mode nil)
  '(inferior-lisp-program "sbcl")
  '(js-indent-level 4)
+ '(kill-buffer-query-functions nil)
  '(linum-delay t)
  '(linum-eager nil)
  '(make-backup-files nil)
