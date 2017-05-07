@@ -139,31 +139,14 @@
 (my-global-set-key [mouse-3] 'my-mouse3-kill)
 (my-global-set-key [double-mouse-3] 'my-region-line 'kill-region)
 
-;;===text zoom
-(define-globalized-minor-mode
-  global-text-scale-mode
-  text-scale-mode
-  (lambda () (text-scale-mode 1)))
+;;===mouse zoom
+(defadvice text-scale-increase (around all-buffers (arg) activate)
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      ad-do-it)))
 
-(defun global-text-scale-adjust (inc)
-  (interactive)
-  (text-scale-set 1)
-  (kill-local-variable 'text-scale-mode-amount)
-  (setq-default text-scale-mode-amount (+ text-scale-mode-amount inc))
-  (global-text-scale-mode 1))
-
-(defun global-text-scale-increase ()
-  (interactive)
-  (global-text-scale-adjust 1))
-
-(defun global-text-scale-decrease ()
-  (interactive)
-  (global-text-scale-adjust -1))
-
-(global-set-key [C-mouse-4] 'global-text-scale-increase)
-(global-set-key [C-mouse-5] 'global-text-scale-decrease)
-(global-set-key [C-wheel-up] 'global-text-scale-increase)
-(global-set-key [C-wheel-down] 'global-text-scale-decrease)
+(global-set-key [C-mouse-4] 'text-scale-increase)
+(global-set-key [C-mouse-5] 'text-scale-decrease)
 
 ;;===cut/copy
 (my-global-set-key "\C-w"
@@ -530,7 +513,7 @@
  '(indent-tabs-mode nil)
  '(inferior-lisp-program "sbcl")
  '(js-indent-level 4)
- '(kill-buffer-query-functions nil t)
+ '(kill-buffer-query-functions nil)
  '(linum-delay t)
  '(linum-eager nil)
  '(make-backup-files nil)

@@ -121,9 +121,9 @@
   (my-local-set-key (kbd "<f7>")
     'my-scala-kill) )
 
-;;(add-hook 'scala-mode-hook 'my-scala-hook)
-;;(autoload 'scala-mode "scala-mode2" "scala..." t)
-(add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode))
+(add-hook 'scala-mode-hook 'my-scala-hook)
+(autoload 'scala-mode "scala-mode2" "scala..." t)
+(add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode2))
 
 ;;===haskell
 (defun my-haskell-kill ()
