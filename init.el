@@ -550,6 +550,7 @@
  '(show-paren-delay 0.0)
  '(show-paren-mode t)
  '(show-paren-style (quote parenthesis))
+ '(split-width-threshold nil)
  '(tcl-application "tclsh")
  '(tcl-continued-indent-level 2)
  '(tcl-indent-level 2)
