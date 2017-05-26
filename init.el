@@ -348,7 +348,8 @@
 (defun my-python-send-line ()
   (interactive)
   (my-region-line)
-  (python-shell-send-region (region-beginning) (region-end) t))
+  (python-shell-send-region (region-beginning) (region-end) t)
+  (deactivate-mark))
 
 (defun my-python-hook ()
   (my-local-set-key (kbd "<f5>")
