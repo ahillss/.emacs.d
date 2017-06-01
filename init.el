@@ -446,7 +446,8 @@
   (let ((str (concat (buffer-substring start end) "\n")))
     (save-excursion
       (my-region-line)
-      (comint-send-string "*nodejs-repl*" str) )))
+      (comint-send-string "*nodejs-repl*" str) ))
+  (deactivate-mark))
 
 (defun my-nodejs-kill ()
   (interactive)
