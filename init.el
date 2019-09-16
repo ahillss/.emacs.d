@@ -71,7 +71,7 @@
   'undo-only)
 
 ;;===tabs to spaces indent
-(my-global-set-key (kbd "<S-tab>")
+(my-global-set-key [C-iso-lefttab]
   'untabify 'indent-for-tab-command)
 
 ;;===ido
