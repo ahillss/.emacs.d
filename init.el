@@ -129,6 +129,8 @@
   (my-region-indents)
   (indent-rigidly (region-beginning) (region-end) amount))
 
+(my-global-set-key [C-tab] 'shift-indent)
+
 ;;===mouse3 copy cut
 (defun my-mouse3-kill ()
   (interactive)
