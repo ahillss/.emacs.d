@@ -337,7 +337,10 @@
 (defun my-python-start ()
   (interactive)
   (unless (get-buffer "*Python*")
-    (call-interactively 'run-python)))
+    (let ((c (current-buffer)))
+      (call-interactively 'run-python)
+      (switch-to-buffer-other-window c)
+      )))
 
 (defun my-python-kill ()
   (interactive)
