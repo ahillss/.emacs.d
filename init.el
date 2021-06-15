@@ -334,11 +334,6 @@
 (add-to-list 'auto-mode-alist '("\\.pl$" . prolog-mode))
 
 ;;===python
-(defun my-python-run ()
-  (interactive)
-  (let ((b (get-buffer "*Python*")))
-    (pop-to-buffer 
-      (or b (make-comint "Python" python-shell-interpreter)))))
 
 (defun my-python-start ()
   (interactive)
