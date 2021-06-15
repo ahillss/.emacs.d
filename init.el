@@ -334,13 +334,20 @@
 (add-to-list 'auto-mode-alist '("\\.pl$" . prolog-mode))
 
 ;;===python
+(defun my-python-run ()
+  (interactive)
+  (let ((b (get-buffer "*Python*")))
+    (pop-to-buffer 
+      (or b (make-comint "Python" python-shell-interpreter)))))
+
 (defun my-python-start ()
   (interactive)
-  (unless (get-buffer "*Python*")
-    (let ((c (current-buffer)))
-      (call-interactively 'run-python)
-      (switch-to-buffer-other-window c)
-      )))
+  (let ((c (current-buffer))
+        (b (get-buffer "*Python*")))
+    (unless b
+      ;;(call-interactively 'run-python)
+      (pop-to-buffer (make-comint "Python" python-shell-interpreter))
+      (switch-to-buffer-other-window c) )))
 
 (defun my-python-kill ()
   (interactive)
