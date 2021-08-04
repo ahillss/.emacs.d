@@ -338,11 +338,7 @@
 (defun my-python-start ()
   (interactive)
   (let ((c (current-buffer)))
-    (pop-to-buffer
-     (or (get-buffer "*Python*")
-         (process-buffer (call-interactively 'run-python))
-         ;;(make-comint "Python" python-shell-interpreter)
-         ))
+    (call-interactively 'run-python)
     (switch-to-buffer-other-window c) ))
 
 (defun my-python-kill ()
