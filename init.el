@@ -341,7 +341,7 @@
     (pop-to-buffer
      (or (get-buffer "*Python*")
          (process-buffer (call-interactively 'run-python))
-         ;;(make-comint "Python" python-shell-interpreter))
+         ;;(make-comint "Python" python-shell-interpreter)
          ))
     (switch-to-buffer-other-window c) ))
 
