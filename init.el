@@ -340,7 +340,7 @@
   (let ((c (current-buffer)))
     (pop-to-buffer
      (process-buffer (call-interactively 'run-python)))
-     (switch-to-buffer-other-window c)))
+    (switch-to-buffer-other-window c)))
 
 (defun my-python-kill ()
   (interactive)
