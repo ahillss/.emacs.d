@@ -502,6 +502,29 @@
 
 (add-hook 'lisp-mode-hook 'my-lisp-hook)
 
+;;===rust
+(defun my-rust-kill ()
+  (interactive)
+  (my-kill-buffers "*compilation*"))
+
+(defun my-rust-hook ()
+  (my-local-set-key (kbd "S-<f5>")
+    'save-buffer 'rust-compile-release)
+  (my-local-set-key (kbd "<f5>")
+    'save-buffer 'rust-compile)
+  (my-local-set-key (kbd "<f6>")
+    'save-buffer 'rust-run)
+  (my-local-set-key (kbd "<f7>")
+    'my-rust-kill)
+  (my-local-set-key (kbd "<f8>")
+    'save-buffer 'rust-check)
+  (my-local-set-key (kbd "<f9>")
+    'save-buffer 'rust-test))
+
+(add-hook 'rust-mode-hook 'my-rust-hook)
+(autoload 'rust-mode "rust-mode" "rust..." t)
+(add-to-list 'auto-mode-alist '("\\.rs$" . rust-mode))
+
 ;;===extra
 (require 'my-extra nil t)
 (require 'simple-tabbar-mode nil t)
