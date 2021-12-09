@@ -230,6 +230,19 @@
         (set-process-sentinel p 'my-shell-sentinel)
         (switch-to-buffer-other-window bufnm)))))
 
+;;===compile
+(defadvice compile (before ad-compile-smart activate)
+  (ad-set-arg 1 t))
+
+(defadvice compile (around other-window activate)
+  ad-do-it
+  (other-window 1)
+  (goto-char (point-max)))
+
+(defadvice compilation-sentinel (around other-window activate)
+  ad-do-it
+  (other-window 1))
+
 ;;===scheme
 (defun my-scheme-start ()
   (interactive)
@@ -401,22 +414,19 @@
 ;;===cpp
 (defun my-cpp-compile ()
   (interactive)
-  (let ((c (current-buffer)))
-    (call-interactively 'compile)
-    (switch-to-buffer-other-window "*compilation*")
-    (switch-to-buffer-other-window c)))
+  (compile "make"))
 
 (defun my-cpp-run ()
   (interactive)
-  (my-shell-run "make test" "*c-run*"))
+  (compile "make test"))
 
 (defun my-cpp-clean ()
   (interactive)
-  (shell-command "make clean"))
+  (compile "make clean"))
 
 (defun my-cpp-kill ()
   (interactive)
-  (my-kill-buffers "*compilation*" "*c-run*"))
+  (my-kill-buffers "*compilation*"))
 
 (defun my-cpp-hook ()
   (set (make-local-variable 'comment-start) "//")
