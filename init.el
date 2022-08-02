@@ -8,6 +8,11 @@
     (add-to-list 'load-path default-directory)
     (normal-top-level-add-subdirs-to-load-path)))
 
+(let ((default-directory "~/.config/emacs/site-lisp"))
+  (when (file-directory-p default-directory)
+    (add-to-list 'load-path default-directory)
+    (normal-top-level-add-subdirs-to-load-path)))
+
 ;;===environments
 (setenv "PKG_CONFIG_PATH" "/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH")
 (setenv "PYTHONPATH" "/usr/local/share/python:$PYTHONPATH")
