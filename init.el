@@ -3,12 +3,7 @@
 (add-to-list 'exec-path "/usr/local/bin")
 
 ;;===site-lisp location
-(let ((default-directory "~/.emacs.d/site-lisp"))
-  (when (file-directory-p default-directory)
-    (add-to-list 'load-path default-directory)
-    (normal-top-level-add-subdirs-to-load-path)))
-
-(let ((default-directory "~/.config/emacs/site-lisp"))
+(let ((default-directory (concat (file-name-directory load-file-name) "site-lisp")))
   (when (file-directory-p default-directory)
     (add-to-list 'load-path default-directory)
     (normal-top-level-add-subdirs-to-load-path)))
@@ -80,6 +75,8 @@
   'untabify 'indent-for-tab-command)
 
 ;;===ido
+(setq ido-save-directory-list-file (concat (file-name-directory load-file-name) ".ido.last"))
+
 (defun op-i:dired ()
   (interactive)
   (let ((dir (car (find-file-read-args "Dired: " nil))))
@@ -571,7 +568,7 @@
  '(ido-enable-flex-matching t)
  '(ido-everywhere t)
  '(ido-mode (quote both) nil (ido))
- '(ido-save-directory-list-file "~/.emacs.d/.ido.last")
+ ;'(ido-save-directory-list-file "~/.emacs.d/.ido.last")
  '(ido-use-filename-at-point (quote guess))
  '(indent-tabs-mode nil)
  '(inferior-lisp-program "sbcl")
