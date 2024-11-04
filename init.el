@@ -1,4 +1,6 @@
 
+;;(load-theme 'tango-dark t)
+
 ;;===
 (add-to-list 'exec-path "/usr/local/bin")
 
@@ -554,6 +556,7 @@
  '(compilation-read-command nil)
  '(compile-command "make")
  '(cursor-type (cons (quote bar) 1))
+ '(custom-enabled-themes (quote (tango-dark)))
  '(delete-selection-mode t)
  '(desktop-save-mode t)
  '(electric-pair-mode t)
