@@ -151,11 +151,11 @@
   text-scale-mode
   (lambda () (text-scale-mode 1)))
 
-(defun global-text-scale-adjust (inc)
+(defun global-text-scale-adjust (v)
   (interactive)
   (text-scale-set 1)
   (kill-local-variable 'text-scale-mode-amount)
-  (setq-default text-scale-mode-amount (+ text-scale-mode-amount inc))
+  (setq-default text-scale-mode-amount (if (= 0 v) 0 (+ text-scale-mode-amount v)))
   (global-text-scale-mode 1))
 
 (defun global-text-scale-increase ()
@@ -166,10 +166,17 @@
   (interactive)
   (global-text-scale-adjust -1))
 
+(defun global-text-scale-reset ()
+  (interactive)
+  (global-text-scale-adjust 0))
+
 (global-set-key [C-mouse-4] 'global-text-scale-increase)
 (global-set-key [C-mouse-5] 'global-text-scale-decrease)
 (global-set-key [C-wheel-up] 'global-text-scale-increase)
 (global-set-key [C-wheel-down] 'global-text-scale-decrease)
+(global-set-key (kbd "C-=") 'global-text-scale-increase)
+(global-set-key (kbd "C--") 'global-text-scale-decrease)
+(global-set-key (kbd "C-0") 'global-text-scale-reset)
 
 ;;===cut/copy
 (my-global-set-key "\C-w"
