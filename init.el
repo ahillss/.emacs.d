@@ -178,6 +178,9 @@
 (global-set-key (kbd "C--") 'global-text-scale-decrease)
 (global-set-key (kbd "C-0") 'global-text-scale-reset)
 
+;;===line numbers
+(global-set-key (kbd "C-S-l") 'display-line-numbers-mode)
+
 ;;===cut/copy
 (my-global-set-key "\C-w"
   'my-region-line 'kill-region)
